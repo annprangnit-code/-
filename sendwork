@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌈 ระบบจัดการงานพี่มิ้ง ✨</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .gradient-header {
+            background: linear-gradient(135deg, #ff69b4, #00f0ff, #7b68ee);
+        }
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        }
+        .modal {
+            animation: modalPop 0.3s ease-out;
+        }
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 min-h-screen">
+    <div class="max-w-7xl mx-auto p-8">
+        <!-- Header -->
+        <div class="gradient-header text-white rounded-3xl p-8 shadow-2xl mb-10 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center text-4xl">💖</div>
+                <div>
+                    <h1 class="text-5xl font-bold tracking-tighter">พี่มิ้ง จัดการงาน</h1>
+                    <p class="text-white/80 text-xl">สดใส ทันสมัย ง่ายสุดๆ</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <button onclick="loadData()" 
+                        class="bg-white text-purple-600 px-8 py-3 rounded-2xl font-semibold flex items-center gap-2 hover:bg-yellow-300 transition">
+                    🔄 รีเฟรชข้อมูล
+                </button>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            <!-- เสร็จเรียบร้อย -->
+            <div class="bg-white rounded-3xl shadow-xl p-8 card-hover border border-green-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-green-500 font-semibold text-lg">✅ งานเสร็จเรียบร้อย</p>
+                        <h2 id="completedCount" class="text-8xl font-bold text-green-600 mt-2">0</h2>
+                    </div>
+                    <div class="text-8xl">🎉</div>
+                </div>
+                <p class="text-sm text-gray-500 mt-4">ไม่รวมงานที่พี่มิ้งโอนเงินแล้ว</p>
+            </div>
+
+            <!-- อยู่ระหว่างทำ -->
+            <div class="bg-white rounded-3xl shadow-xl p-8 card-hover border border-orange-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-orange-500 font-semibold text-lg">🔨 งานอยู่ระหว่างทำ</p>
+                        <h2 id="progressCount" class="text-8xl font-bold text-orange-600 mt-2">0</h2>
+                    </div>
+                    <div class="text-8xl">🚀</div>
+                </div>
+                <p class="text-sm text-gray-500 mt-4">ไม่รวมงานที่พี่มิ้งโอนเงินแล้ว</p>
+            </div>
+        </div>
+
+        <!-- ฟอร์มกรอกข้อมูล -->
+        <div class="bg-white rounded-3xl shadow-2xl p-10 mb-12">
+            <h2 class="text-3xl font-bold text-purple-600 mb-8 flex items-center gap-3">
+                <span>📝</span> กรอกข้อมูลงานใหม่
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- วันที่ส่ง -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">📅 วันที่ส่ง</label>
+                    <input id="dateSent" type="date" 
+                           class="w-full px-6 py-4 rounded-2xl border-2 border-purple-200 focus:border-purple-500 focus:outline-none text-lg">
+                </div>
+
+                <!-- ชื่อบริษัท -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">🏢 ชื่อบริษัท</label>
+                    <input id="company" type="text" placeholder="เช่น บริษัท ABC จำกัด"
+                           class="w-full px-6 py-4 rounded-2xl border-2 border-purple-200 focus:border-purple-500 focus:outline-none text-lg">
+                </div>
+
+                <!-- ชื่อโฟลเดอร์ -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">📁 ชื่อโฟลเดอร์</label>
+                    <input id="folder" type="text" placeholder="เช่น Project_2025"
+                           class="w-full px-6 py-4 rounded-2xl border-2 border-purple-200 focus:border-purple-500 focus:outline-none text-lg">
+                </div>
+
+                <!-- สถานะงาน -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">📊 สถานะงาน</label>
+                    <select id="status" 
+                            class="w-full px-6 py-4 rounded-2xl border-2 border-purple-200 focus:border-purple-500 focus:outline-none text-lg bg-white">
+                        <option value="">-- เลือกสถานะ --</option>
+                        <option value="เสร็จเรียบร้อยแล้วค่ะ">เสร็จเรียบร้อยแล้วค่ะ ✅</option>
+                        <option value="อยู่ระหว่างทำนะคะ">อยู่ระหว่างทำนะคะ 🔨</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- ส่วนโอนเงิน (ติ๊กตามที่ขอ) -->
+            <div class="mt-10 border-t border-purple-100 pt-8">
+                <label class="flex items-center gap-4 cursor-pointer group">
+                    <input type="checkbox" id="isTransferred" 
+                           class="w-8 h-8 accent-pink-500 border-4 border-pink-300 rounded-xl">
+                    <span class="text-2xl font-semibold text-pink-600 group-hover:text-pink-700">
+                        💸 พี่มิ้งโอนเงินแล้วค่ะ
+                    </span>
+                </label>
+
+                <div id="transferDateDiv" class="hidden mt-6 pl-12">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">วันที่โอนเงิน</label>
+                    <input id="transferDate" type="date"
+                           class="w-full md:w-96 px-6 py-4 rounded-2xl border-2 border-pink-300 focus:border-pink-500 focus:outline-none text-lg">
+                </div>
+            </div>
+
+            <!-- ปุ่มส่ง -->
+            <button onclick="submitForm()" 
+                    class="mt-10 w-full bg-gradient-to-r from-pink-500 to-violet-600 hover:from-pink-600 hover:to-violet-700 text-white text-2xl font-bold py-6 rounded-3xl shadow-xl transition-all duration-300 flex items-center justify-center gap-3">
+                <span>🚀 บันทึกข้อมูลทันที</span>
+            </button>
+        </div>
+
+        <!-- ตารางข้อมูล -->
+        <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+            <div class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-6 flex items-center justify-between">
+                <h2 class="text-3xl font-bold">📋 ข้อมูลงานทั้งหมด</h2>
+                <p class="text-sm opacity-75">คลิกปุ่มเพื่อติ๊ก "พี่มิ้งโอนแล้ว"</p>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-purple-50 text-purple-700">
+                            <th class="px-6 py-5 text-left font-semibold">วันที่ส่ง</th>
+                            <th class="px-6 py-5 text-left font-semibold">ชื่อบริษัท</th>
+                            <th class="px-6 py-5 text-left font-semibold">ชื่อโฟลเดอร์</th>
+                            <th class="px-6 py-5 text-left font-semibold">สถานะงาน</th>
+                            <th class="px-6 py-5 text-left font-semibold">พี่มิ้งโอนแล้ว</th>
+                            <th class="px-6 py-5 text-center font-semibold">จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataTable" class="divide-y divide-purple-100 text-gray-700">
+                        <!-- JS จะเติมข้อมูลที่นี่ -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal ติ๊กโอนเงิน -->
+    <div id="transferModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+        <div class="modal bg-white rounded-3xl shadow-2xl w-full max-w-md mx-4 p-8">
+            <h3 class="text-2xl font-bold text-pink-600 mb-6">💸 พี่มิ้งโอนเงินแล้วใช่ไหมคะ?</h3>
+            
+            <div class="mb-6">
+                <label class="block text-sm font-semibold text-gray-600 mb-2">ระบุวันที่โอน</label>
+                <input id="modalTransferDate" type="date" 
+                       class="w-full px-6 py-4 rounded-2xl border-2 border-pink-300 focus:border-pink-500 text-lg">
+            </div>
+
+            <div class="flex gap-4">
+                <button onclick="closeModal()" 
+                        class="flex-1 py-4 rounded-2xl border-2 border-gray-300 font-semibold text-gray-600 hover:bg-gray-100">
+                    ยกเลิก
+                </button>
+                <button onclick="confirmTransfer()" 
+                        class="flex-1 py-4 rounded-2xl bg-gradient-to-r from-pink-500 to-violet-600 text-white font-bold text-xl">
+                    ✅ ยืนยันโอนแล้ว
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tailwind script (ไม่ต้อง config เพิ่ม)
+        function initTailwind() {
+            // ใช้งานได้ทันที
+        }
+
+        let currentRowIndex = 0; // สำหรับ modal
+
+        // โหลดข้อมูล
+        function loadData() {
+            google.script.run
+                .withSuccessHandler(renderDashboardAndTable)
+                .withFailureHandler((error) => {
+                    alert("เกิดข้อผิดพลาด: " + error.message);
+                })
+                .getAllData();
+        }
+
+        function renderDashboardAndTable(data) {
+            let completed = 0;
+            let progress = 0;
+            const tbody = document.getElementById('dataTable');
+            tbody.innerHTML = '';
+
+            // ข้าม header (row 0)
+            for (let i = 1; i < data.length; i++) {
+                const row = data[i];
+                const dateSent = row[0] || '';
+                const company = row[1] || '';
+                const folder = row[2] || '';
+                const status = row[3] || '';
+                const transferInfo = row[4] || '';
+
+                // นับแดชบอร์ด (ไม่รวมที่โอนแล้ว)
+                if (transferInfo === '' || transferInfo === null) {
+                    if (status === 'เสร็จเรียบร้อยแล้วค่ะ') completed++;
+                    if (status === 'อยู่ระหว่างทำนะคะ') progress++;
+                }
+
+                // สร้างแถวตาราง
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-purple-50 transition';
+                tr.innerHTML = `
+                    <td class="px-6 py-6">${dateSent}</td>
+                    <td class="px-6 py-6 font-medium">${company}</td>
+                    <td class="px-6 py-6">${folder}</td>
+                    <td class="px-6 py-6">
+                        <span class="${status.includes('เสร็จ') ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'} px-5 py-1.5 rounded-2xl text-sm font-semibold">
+                            ${status}
+                        </span>
+                    </td>
+                    <td class="px-6 py-6 font-medium text-pink-600">${transferInfo || '—'}</td>
+                    <td class="px-6 py-6 text-center">
+                        ${transferInfo === '' ? 
+                            `<button onclick="showTransferModal(${i + 2})" 
+                                     class="bg-gradient-to-r from-lime-400 to-cyan-500 hover:from-lime-500 hover:to-cyan-600 text-white px-7 py-3 rounded-2xl font-bold text-sm transition">
+                                💸 โอนแล้ว
+                            </button>` 
+                            : `<span class="text-emerald-600 font-bold">✓ โอนเรียบร้อย</span>`}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            }
+
+            // อัพเดทแดชบอร์ด
+            document.getElementById('completedCount').textContent = completed;
+            document.getElementById('progressCount').textContent = progress;
+        }
+
+        // แสดง Modal
+        function showTransferModal(rowIndex) {
+            currentRowIndex = rowIndex;
+            document.getElementById('transferModal').classList.remove('hidden');
+            document.getElementById('modalTransferDate').focus();
+        }
+
+        function closeModal() {
+            document.getElementById('transferModal').classList.add('hidden');
+        }
+
+        // ยืนยันโอนเงิน
+        function confirmTransfer() {
+            const date = document.getElementById('modalTransferDate').value;
+            if (!date) {
+                alert('กรุณาระบุวันที่โอนค่ะ 💕');
+                return;
+            }
+
+            const transferInfo = `พี่มิ้งโอนแล้วค่ะ ${date}`;
+
+            google.script.run
+                .withSuccessHandler(() => {
+                    alert('✅ บันทึกการโอนเงินเรียบร้อยแล้ว!');
+                    closeModal();
+                    loadData();
+                })
+                .withFailureHandler((err) => alert('เกิดข้อผิดพลาด: ' + err.message))
+                .markTransferred(currentRowIndex, transferInfo);
+        }
+
+        // ส่งฟอร์ม
+        function submitForm() {
+            const dateSent = document.getElementById('dateSent').value;
+            const company = document.getElementById('company').value.trim();
+            const folder = document.getElementById('folder').value.trim();
+            const status = document.getElementById('status').value;
+            const isTransferred = document.getElementById('isTransferred').checked;
+            let transferInfo = '';
+
+            if (isTransferred) {
+                const tDate = document.getElementById('transferDate').value;
+                if (!tDate) {
+                    alert('กรุณาใส่ "วันที่โอน" ถ้าติ๊กพี่มิ้งโอนแล้วนะคะ 💸');
+                    return;
+                }
+                transferInfo = `พี่มิ้งโอนแล้วค่ะ ${tDate}`;
+            }
+
+            if (!dateSent || !company || !folder || !status) {
+                alert('กรุณากรอกข้อมูลให้ครบทุกช่องค่ะ 🌈');
+                return;
+            }
+
+            const entry = [dateSent, company, folder, status, transferInfo];
+
+            google.script.run
+                .withSuccessHandler(() => {
+                    alert('🎉 บันทึกข้อมูลสำเร็จ! ระบบอัพเดทเรียบร้อย');
+                    document.getElementById('dateSent').value = '';
+                    document.getElementById('company').value = '';
+                    document.getElementById('folder').value = '';
+                    document.getElementById('status').value = '';
+                    document.getElementById('isTransferred').checked = false;
+                    document.getElementById('transferDateDiv').classList.add('hidden');
+                    loadData();
+                })
+                .withFailureHandler((err) => {
+                    alert('เกิดข้อผิดพลาด: ' + err.message);
+                })
+                .addNewEntry(entry);
+        }
+
+        // Toggle วันที่โอนเมื่อติ๊ก checkbox
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkbox = document.getElementById('isTransferred');
+            const dateDiv = document.getElementById('transferDateDiv');
+            
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    dateDiv.classList.remove('hidden');
+                } else {
+                    dateDiv.classList.add('hidden');
+                }
+            });
+
+            // โหลดข้อมูลครั้งแรก
+            loadData();
+
+            // เรียกใช้ Tailwind
+            initTailwind();
+        });
+    </script>
+</body>
+</html>
