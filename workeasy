@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌈 พี่มิ้ง จัดการงาน (Demo)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        body { font-family: 'Poppins', sans-serif; }
+        .gradient-header { background: linear-gradient(135deg, #ff69b4, #00f0ff, #7b68ee); }
+        .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-hover:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25); }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 min-h-screen">
+    <div class="max-w-7xl mx-auto p-8">
+        <!-- Header -->
+        <div class="gradient-header text-white rounded-3xl p-8 shadow-2xl mb-10 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center text-4xl">💖</div>
+                <div>
+                    <h1 class="text-5xl font-bold tracking-tighter">พี่มิ้ง จัดการงาน (Demo)</h1>
+                    <p class="text-white/80 text-xl">เวอร์ชันทดสอบบน GitHub Pages – สีสันสดใส ไม่บันทึกจริงนะคะ</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            <div class="bg-white rounded-3xl shadow-xl p-8 card-hover border border-green-200">
+                <p class="text-green-500 font-semibold text-lg">✅ งานเสร็จเรียบร้อย</p>
+                <h2 class="text-8xl font-bold text-green-600 mt-2">7</h2>
+                <p class="text-sm text-gray-500 mt-4">(ตัวอย่าง mock data)</p>
+            </div>
+            <div class="bg-white rounded-3xl shadow-xl p-8 card-hover border border-orange-200">
+                <p class="text-orange-500 font-semibold text-lg">🔨 งานอยู่ระหว่างทำ</p>
+                <h2 class="text-8xl font-bold text-orange-600 mt-2">4</h2>
+                <p class="text-sm text-gray-500 mt-4">(ตัวอย่าง mock data)</p>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="bg-white rounded-3xl shadow-2xl p-10 mb-12">
+            <h2 class="text-3xl font-bold text-purple-600 mb-8 flex items-center gap-3"><span>📝</span> กรอกข้อมูลงานใหม่ (Demo)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">📅 วันที่ส่ง</label>
+                    <input type="date" class="w-full px-6 py-4 rounded-2xl border-2 border-purple-200 text-lg">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">🏢 ชื่อบริษัท</label>
+                    <input type="text" placeholder="เช่น บริษัท ABC จำกัด" class="w-full px-6 py-4 rounded-2xl border-2 border-purple-200 text-lg">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">📁 ชื่อโฟลเดอร์</label>
+                    <input type="text" placeholder="เช่น Project_2025" class="w-full px-6 py-4 rounded-2xl border-2 border-purple-200 text-lg">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">📊 สถานะงาน</label>
+                    <select class="w-full px-6 py-4 rounded-2xl border-2 border-purple-200 text-lg bg-white">
+                        <option>-- เลือกสถานะ --</option>
+                        <option>เสร็จเรียบร้อยแล้วค่ะ ✅</option>
+                        <option>อยู่ระหว่างทำนะคะ 🔨</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mt-10 border-t border-purple-100 pt-8">
+                <label class="flex items-center gap-4 cursor-pointer">
+                    <input type="checkbox" class="w-8 h-8 accent-pink-500 border-4 border-pink-300 rounded-xl">
+                    <span class="text-2xl font-semibold text-pink-600">💸 พี่มิ้งโอนเงินแล้วค่ะ</span>
+                </label>
+            </div>
+
+            <button onclick="alert('🎉 Demo mode: ข้อมูลถูกบันทึกสมมติเรียบร้อยแล้ว! (ไม่บันทึกจริงใน Sheet นะคะ)');"
+                    class="mt-10 w-full bg-gradient-to-r from-pink-500 to-violet-600 hover:from-pink-600 hover:to-violet-700 text-white text-2xl font-bold py-6 rounded-3xl shadow-xl transition-all">
+                🚀 บันทึกข้อมูล (Demo)
+            </button>
+        </div>
+
+        <!-- Table (Mock) -->
+        <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+            <div class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-6">
+                <h2 class="text-3xl font-bold">📋 ข้อมูลงานทั้งหมด (ตัวอย่าง)</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-purple-50 text-purple-700">
+                            <th class="px-6 py-5 text-left">วันที่ส่ง</th>
+                            <th class="px-6 py-5 text-left">บริษัท</th>
+                            <th class="px-6 py-5 text-left">โฟลเดอร์</th>
+                            <th class="px-6 py-5 text-left">สถานะ</th>
+                            <th class="px-6 py-5 text-left">โอนแล้ว</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-purple-100">
+                        <tr class="hover:bg-purple-50">
+                            <td class="px-6 py-6">2026-03-15</td>
+                            <td class="px-6 py-6 font-medium">บริษัท XYZ จำกัด</td>
+                            <td class="px-6 py-6">Campaign_2026</td>
+                            <td class="px-6 py-6"><span class="bg-green-100 text-green-700 px-5 py-1.5 rounded-2xl text-sm font-semibold">เสร็จเรียบร้อยแล้วค่ะ</span></td>
+                            <td class="px-6 py-6 text-pink-600">—</td>
+                        </tr>
+                        <!-- เพิ่มแถว mock อีกตามชอบ -->
+                        <tr class="hover:bg-purple-50">
+                            <td class="px-6 py-6">2026-03-10</td>
+                            <td class="px-6 py-6 font-medium">ร้านกาแฟดีดี</td>
+                            <td class="px-6 py-6">Menu_Update</td>
+                            <td class="px-6 py-6"><span class="bg-orange-100 text-orange-700 px-5 py-1.5 rounded-2xl text-sm font-semibold">อยู่ระหว่างทำนะคะ</span></td>
+                            <td class="px-6 py-6 text-pink-600">พี่มิ้งโอนแล้วค่ะ 2026-03-12</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <p class="text-center text-gray-500 mt-12">เวอร์ชันเต็ม (บันทึกจริงใน Google Sheet) → <a href="https://script.google.com/macros/s/[ใส่-ID-จริง]/exec" class="text-purple-600 underline" target="_blank">คลิกที่นี่</a> (deploy จาก Apps Script)</p>
+    </div>
+</body>
+</html>
